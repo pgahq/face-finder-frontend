@@ -60,6 +60,11 @@ const Consumer = () => {
     })
   }
 
+  const handleRemoveSelfie = () => {
+    setFile(null)
+    setImage(null)
+  }
+
   return (
     <Container style={{ marginTop: '50px' }}>
       <Grid container justifyContent='center' alignItems='center'>
@@ -121,7 +126,7 @@ const Consumer = () => {
                 }
                 style={{ paddingLeft: 4, paddingRight: 4 }}
               />
-              <IconButton>
+              <IconButton onClick={handleRemoveSelfie}>
                 <Close />
               </IconButton>
             </ListItem>
@@ -134,7 +139,7 @@ const Consumer = () => {
           fullWidth
           variant='contained'
           color='primary'
-          onClick={() => handleVerifyConsumer()}
+          onClick={handleVerifyConsumer}
         >
           Submit
         </Button>

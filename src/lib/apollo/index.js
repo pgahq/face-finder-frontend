@@ -2,9 +2,7 @@ import React from 'react'
 import {
   ApolloProvider,
   ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  ApolloLink
+  InMemoryCache
 } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
 
@@ -21,16 +19,12 @@ const defaultOptions = {
 
 const withApolloClient = App => {
   const WithApolloClient = props => {
-    const httpLink = createHttpLink({
-      uri: process.env.REACT_APP_API_ROOT
-    })
-
     const uploadLink = createUploadLink({
       uri: process.env.REACT_APP_API_ROOT
     })
 
     const client = new ApolloClient({
-      link: ApolloLink.from([uploadLink, httpLink]),
+      link: uploadLink,
       cache: new InMemoryCache({ resultCaching: false }),
       defaultOptions
     })
