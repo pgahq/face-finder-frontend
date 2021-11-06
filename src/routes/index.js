@@ -5,13 +5,13 @@ import {
   Route
 } from 'react-router-dom'
 import Welcome from '../pages/Welcome'
-import Consumer from '../pages/Consumer'
+import VerifyConsumer from '../pages/VerifyConsumer'
 
 const Routes = () => (
   <Router>
     <Switch>
       <Route path='/' exact component={Welcome} />
-      <Route path='/consumer' component={Consumer} />
+      <Route path='/consumer' component={VerifyConsumer} />
     </Switch>
   </Router>
 )
