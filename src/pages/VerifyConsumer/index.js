@@ -58,12 +58,17 @@ const VerifyConsumer = () => {
     if (currentPage === INFO_PAGE) {
       if (!email) return
 
-      await verifyConsumer({
-        variables: {
-          email,
-          selfie: file
-        }
-      })
+      try {
+        await verifyConsumer({
+          variables: {
+            email,
+            selfie: file
+          }
+        })
+      } catch (e) {
+        // TODO: handle error
+        console.log(e.graphQLErrors)
+      }
     } else {
       setCurrentPage(INFO_PAGE)
     }

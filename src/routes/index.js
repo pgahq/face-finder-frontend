@@ -4,14 +4,12 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import Welcome from '../pages/Welcome'
 import VerifyConsumer from '../pages/VerifyConsumer'
 
 const Routes = () => (
   <Router>
     <Switch>
-      <Route path='/' exact component={Welcome} />
-      <Route path='/consumer' component={VerifyConsumer} />
+      <Route path='/' component={VerifyConsumer} />
     </Switch>
   </Router>
 )
