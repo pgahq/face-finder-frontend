@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 
-const BottomContainer = styled('div')({
+export const BottomContainer = styled('div')({
   position: 'absolute',
   bottom: 16,
   right: 0,
@@ -8,5 +8,3 @@ const BottomContainer = styled('div')({
   paddingLeft: 16,
   paddingRight: 16
 })
-
-export default BottomContainer
