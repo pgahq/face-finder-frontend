@@ -73,7 +73,7 @@ const VerifyConsumer = () => {
       {currentPage === INFO_PAGE
         ? (
           <Box>
-            <Box my={2}>
+            <Box mb={1}>
               <Typography variant='title'>Name</Typography>
             </Box>
             <TextField
@@ -82,7 +82,7 @@ const VerifyConsumer = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <Box my={2}>
+            <Box mt={2} mb={1}>
               <Typography variant='title'>Email</Typography>
             </Box>
             <TextField
