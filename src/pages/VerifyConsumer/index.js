@@ -39,7 +39,6 @@ const VerifyConsumer = () => {
   const [file, setFile] = useState(null)
   const [image, setImage] = useState(null)
   const [email, setEmail] = useState(null)
-  const [name, setName] = useState(null)
 
   const [currentPage, setCurrentPage] = useState(IMAGE_PAGE)
 
@@ -57,6 +56,8 @@ const VerifyConsumer = () => {
     if (!image) return
 
     if (currentPage === INFO_PAGE) {
+      if (!email) return
+
       await verifyConsumer({
         variables: {
           email,
@@ -69,28 +70,27 @@ const VerifyConsumer = () => {
   }
 
   return (
-    <Container style={{ marginTop: '160px' }}>
+    <Container style={{ marginTop: '140px' }}>
       {currentPage === INFO_PAGE
         ? (
           <Box>
             <Box mb={1}>
               <Typography variant='title'>Name</Typography>
             </Box>
-            <TextField
-              fullWidth
-              placeholder='Enter your name'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <TextField fullWidth placeholder='Enter your name' />
             <Box mt={2} mb={1}>
               <Typography variant='title'>Email</Typography>
             </Box>
             <TextField
               fullWidth
               placeholder='Enter your email address'
-              value={email}
+              value={email || ''}
               onChange={(e) => setEmail(e.target.value)}
             />
+            <Box mt={2} mb={1}>
+              <Typography variant='title'>Twitter</Typography>
+            </Box>
+            <TextField fullWidth placeholder='Enter your twitter id' />
           </Box>
           )
         : (
