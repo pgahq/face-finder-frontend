@@ -3,8 +3,10 @@ import {
   ApolloProvider,
   ApolloClient,
   createHttpLink,
-  InMemoryCache
+  InMemoryCache,
+  ApolloLink
 } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 
 const defaultOptions = {
   watchQuery: {
@@ -23,8 +25,12 @@ const withApolloClient = App => {
       uri: process.env.REACT_APP_API_ROOT
     })
 
+    const uploadLink = createUploadLink({
+      uri: process.env.REACT_APP_API_ROOT
+    })
+
     const client = new ApolloClient({
-      link: httpLink,
+      link: ApolloLink.from([uploadLink, httpLink]),
       cache: new InMemoryCache({ resultCaching: false }),
       defaultOptions
     })
