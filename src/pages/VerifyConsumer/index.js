@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useMutation } from '@apollo/client'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
 
 import { VERIFY_CONSUMER } from './mutation'
-import { BottomContainer } from '../../components/atoms'
 import ConsumerInfo from './ConsumerInfo'
 import PhotoUploader from './PhotoUploader'
 
@@ -15,57 +16,47 @@ const INFO_PAGE = 'INFO'
 
 const VerifyConsumer = () => {
   const [file, setFile] = useState(null)
-  const [email, setEmail] = useState(null)
-
   const [currentPage, setCurrentPage] = useState(IMAGE_PAGE)
 
-  const [verifyConsumer, { loading }] = useMutation(VERIFY_CONSUMER)
+  const validationSchema = Yup.object().shape({
+    name: Yup.string(),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
+    twitter: Yup.string()
+  })
 
-  const handleNextStep = async () => {
-    if (!file) return
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(validationSchema)
+  })
 
-    if (currentPage === INFO_PAGE) {
-      if (!email) return
-
-      try {
-        await verifyConsumer({
-          variables: {
-            email,
-            selfie: file
-          }
-        })
-      } catch (e) {
-        // TODO: handle error
-        console.log(e.graphQLErrors)
-      }
-    } else {
-      setCurrentPage(INFO_PAGE)
+  const onSubmit = async (data) => {
+    try {
+      await verifyConsumer({
+        variables: {
+          email: data.email,
+          selfie: file
+        }
+      })
+    } catch (e) {
+      // TODO: handle error
+      console.log(e.graphQLErrors)
     }
   }
+
+  const [verifyConsumer, { loading }] = useMutation(VERIFY_CONSUMER)
 
   return (
     <Container style={{ marginTop: '140px' }}>
       {currentPage === INFO_PAGE
         ? (
-          <ConsumerInfo
-            email={email}
-            onChangeEmail={(value) => setEmail(value)}
-          />
+          <ConsumerInfo register={register} errors={errors} onSubmit={handleSubmit(onSubmit)} />
           )
         : (
-          <PhotoUploader onChange={(file) => setFile(file)} />
+          <PhotoUploader onChange={(file) => setFile(file)} onSubmit={() => setCurrentPage(INFO_PAGE)} />
           )}
-
-      <BottomContainer>
-        <Button
-          fullWidth
-          variant='contained'
-          color='primary'
-          onClick={handleNextStep}
-        >
-          Next
-        </Button>
-      </BottomContainer>
 
       <Backdrop open={loading}>
         <CircularProgress color='inherit' />

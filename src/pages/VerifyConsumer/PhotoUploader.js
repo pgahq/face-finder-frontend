@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import { BottomContainer } from '../../components/atoms'
 
 import { styled } from '@mui/material/styles'
 
@@ -22,7 +24,7 @@ const SelfieImage = styled('img')({
   borderRadius: 8
 })
 
-const PhotoUploader = ({ onChange }) => {
+const PhotoUploader = ({ onChange, onSubmit }) => {
   const [image, setImage] = useState(null)
 
   const handleSelectImage = (event) => {
@@ -31,6 +33,11 @@ const PhotoUploader = ({ onChange }) => {
       onChange(file)
       setImage(URL.createObjectURL(file))
     }
+  }
+
+  const handleSubmit = () => {
+    if (!image) return
+    onSubmit()
   }
 
   return (
@@ -65,6 +72,17 @@ const PhotoUploader = ({ onChange }) => {
             </SelectImageContainer>
             )}
       </label>
+
+      <BottomContainer>
+        <Button
+          fullWidth
+          variant='contained'
+          color='primary'
+          onClick={handleSubmit}
+        >
+          Next
+        </Button>
+      </BottomContainer>
     </Box>
   )
 }
