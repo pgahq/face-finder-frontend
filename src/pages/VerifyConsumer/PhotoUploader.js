@@ -3,11 +3,10 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { BottomContainer } from '../../components/atoms'
-
 import { styled } from '@mui/material/styles'
-
 import CloudUploadRounded from '@mui/icons-material/CloudUploadRounded'
+
+import BottomContainer from '../../components/atoms/BottomContainer'
 
 const SelectImageContainer = styled('div')(({ theme }) => ({
   textAlign: 'center',
