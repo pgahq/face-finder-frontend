@@ -4,21 +4,20 @@ import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
 import { useMutation } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import { useLocation } from 'react-router-dom'
 
 import { VERIFY_CONSUMER } from './mutation'
 import ConsumerInfo from './ConsumerInfo'
-import PhotoUploader from './PhotoUploader'
-
-const IMAGE_PAGE = 'IMAGE'
-const INFO_PAGE = 'INFO'
+import BottomContainer from '../../components/atoms/BottomContainer'
 
 const VerifyConsumer = () => {
-  const [file, setFile] = useState(null)
-  const [currentPage, setCurrentPage] = useState(IMAGE_PAGE)
+  const location = useLocation()
+
   const [visibleError, setVisibleError] = useState(false)
 
   const validationSchema = Yup.object().shape({
@@ -39,6 +38,8 @@ const VerifyConsumer = () => {
 
   const onSubmit = async (data) => {
     try {
+      const { file } = location.state
+
       await verifyConsumer({
         variables: {
           email: data.email,
@@ -52,20 +53,18 @@ const VerifyConsumer = () => {
 
   return (
     <Container style={{ marginTop: '140px' }}>
-      {currentPage === INFO_PAGE
-        ? (
-          <ConsumerInfo
-            register={register}
-            errors={errors}
-            onSubmit={handleSubmit(onSubmit)}
-          />
-          )
-        : (
-          <PhotoUploader
-            onChange={(file) => setFile(file)}
-            onSubmit={() => setCurrentPage(INFO_PAGE)}
-          />
-          )}
+      <ConsumerInfo register={register} errors={errors} />
+
+      <BottomContainer>
+        <Button
+          fullWidth
+          variant='contained'
+          color='primary'
+          onClick={handleSubmit(onSubmit)}
+        >
+          Next
+        </Button>
+      </BottomContainer>
 
       <Backdrop open={loading}>
         <CircularProgress color='inherit' />

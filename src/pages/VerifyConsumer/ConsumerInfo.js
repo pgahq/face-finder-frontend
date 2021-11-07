@@ -2,11 +2,8 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 
-import BottomContainer from '../../components/atoms/BottomContainer'
-
-const ConsumerInfo = ({ register, errors, onSubmit }) => {
+const ConsumerInfo = ({ register, errors }) => {
   return (
     <Box>
       <Box mb={1}>
@@ -39,17 +36,6 @@ const ConsumerInfo = ({ register, errors, onSubmit }) => {
         placeholder='Enter your twitter id'
         {...register('twitter')}
       />
-
-      <BottomContainer>
-        <Button
-          fullWidth
-          variant='contained'
-          color='primary'
-          onClick={onSubmit}
-        >
-          Next
-        </Button>
-      </BottomContainer>
     </Box>
   )
 }
