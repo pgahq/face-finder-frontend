@@ -2,9 +2,9 @@ import React from 'react'
 import {
   ApolloProvider,
   ApolloClient,
-  createHttpLink,
   InMemoryCache
 } from '@apollo/client'
+import { createUploadLink } from 'apollo-upload-client'
 
 const defaultOptions = {
   watchQuery: {
@@ -19,12 +19,12 @@ const defaultOptions = {
 
 const withApolloClient = App => {
   const WithApolloClient = props => {
-    const httpLink = createHttpLink({
+    const uploadLink = createUploadLink({
       uri: process.env.REACT_APP_API_ROOT
     })
 
     const client = new ApolloClient({
-      link: httpLink,
+      link: uploadLink,
       cache: new InMemoryCache({ resultCaching: false }),
       defaultOptions
     })

@@ -1,15 +1,13 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
-import Welcome from '../pages/Welcome'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import VerifyConsumer from '../pages/VerifyConsumer'
+import SelectImage from '../pages/SelectImage'
 
 const Routes = () => (
   <Router>
     <Switch>
-      <Route path='/' component={Welcome} />
+      <Route path='/' exact component={SelectImage} />
+      <Route path='/verify' component={VerifyConsumer} />
     </Switch>
   </Router>
 )
