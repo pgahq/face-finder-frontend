@@ -22,11 +22,11 @@ const ViewPhoto = () => {
       {loading && <ViewPhotoSkeleton />}
 
       <Grid container rowSpacing={1}>
-      {data?.myPhotosInEvent.map((item) => (
+        {data?.myPhotosInEvent.map((item) => (
           <Grid item xs={4} key={item.id} container justifyContent='center'>
             <ImageListItem>
               <img
-                src='https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=164&h=164&fit=crop&auto=format' // TODO: wait api to get link photo
+                src={item.photo.url}
                 alt={item.photo.filename}
                 loading='lazy'
                 style={{ height: 100, objectFit: 'cover' }}

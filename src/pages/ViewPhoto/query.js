@@ -7,6 +7,7 @@ export const MY_PHOTOS_IN_EVENT = gql`
       photo {
         id
         filename
+        url
       }
   }
 }
