@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Container from '@mui/material/Container'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -13,12 +13,14 @@ import { useHistory } from 'react-router-dom'
 
 import { VERIFY_CONSUMER } from './mutation'
 import { resizeImage } from '../../utils/resizeImage'
+import AppContext from '../../contexts/AppContext'
 import ConsumerInfo from './ConsumerInfo'
 import PhotoUploader from './PhotoUploader'
 import BottomContainer from '../../components/atoms/BottomContainer'
 
 const VerifyConsumer = () => {
   const history = useHistory()
+  const { setAccessToken } = useContext(AppContext)
 
   const [file, setFile] = useState(null)
   const [visibleError, setVisibleError] = useState(false)
@@ -51,7 +53,7 @@ const VerifyConsumer = () => {
         }
       })
       const { accessToken } = verifyData.verifyConsumer
-      window.localStorage.setItem('accessToken', accessToken)
+      setAccessToken(accessToken)
 
       history.push('/events')
     } catch (e) {
