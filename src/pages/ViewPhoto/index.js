@@ -29,7 +29,7 @@ const ViewPhoto = () => {
                 src={item.photo.url}
                 alt={item.photo.filename}
                 loading='lazy'
-                style={{ height: 100, objectFit: 'cover' }}
+                style={{ height: 100, width: 100, objectFit: 'cover' }}
               />
             </ImageListItem>
           </Grid>

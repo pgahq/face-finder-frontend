@@ -10,9 +10,9 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom'
-import Resizer from 'react-image-file-resizer'
 
 import { VERIFY_CONSUMER } from './mutation'
+import { resizeImage } from '../../utils/resizeImage'
 import ConsumerInfo from './ConsumerInfo'
 import PhotoUploader from './PhotoUploader'
 import BottomContainer from '../../components/atoms/BottomContainer'
@@ -39,25 +39,9 @@ const VerifyConsumer = () => {
 
   const [verifyConsumer, { loading, error }] = useMutation(VERIFY_CONSUMER)
 
-  const resizeFile = (file) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        300,
-        300,
-        'JPEG',
-        85,
-        0,
-        (uri) => {
-          resolve(uri)
-        },
-        'file'
-      )
-    })
-
   const onSubmit = async (data) => {
     if (!file) return
-    const newFile = await resizeFile(file)
+    const newFile = await resizeImage(file)
 
     try {
       const { data: verifyData } = await verifyConsumer({
