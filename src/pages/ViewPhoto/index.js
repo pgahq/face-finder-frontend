@@ -1,7 +1,7 @@
 import React from 'react'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
+import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
@@ -21,20 +21,17 @@ const ViewPhoto = () => {
     <Container sx={{ paddingLeft: 0, paddingRight: 0, paddingBottom: 8 }}>
       {loading && <ViewPhotoSkeleton />}
 
-      <Grid container rowSpacing={1}>
+      <ImageList variant='masonry' cols={2} gap={8}>
         {data?.myPhotosInEvent.map((item) => (
-          <Grid item xs={4} key={item.id} container justifyContent='center'>
-            <ImageListItem>
-              <img
-                src={item.photo.url}
-                alt={item.photo.filename}
-                loading='lazy'
-                style={{ height: 100, width: 100, objectFit: 'cover' }}
-              />
-            </ImageListItem>
-          </Grid>
+          <ImageListItem key={item.id}>
+            <img
+              src={item.photo.url}
+              alt={item.photo.filename}
+              loading='lazy'
+            />
+          </ImageListItem>
         ))}
-      </Grid>
+      </ImageList>
 
       <BottomContainer>
         <Button fullWidth variant='contained' color='primary'>
