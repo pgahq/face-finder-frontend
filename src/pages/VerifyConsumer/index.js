@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Container from '@mui/material/Container'
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -9,15 +9,20 @@ import { useMutation } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { VERIFY_CONSUMER } from './mutation'
+import { resizeImage } from '../../utils/resizeImage'
+import AppContext from '../../contexts/AppContext'
 import ConsumerInfo from './ConsumerInfo'
+import PhotoUploader from './PhotoUploader'
 import BottomContainer from '../../components/atoms/BottomContainer'
 
 const VerifyConsumer = () => {
-  const location = useLocation()
+  const history = useHistory()
+  const { setAccessToken } = useContext(AppContext)
 
+  const [file, setFile] = useState(null)
   const [visibleError, setVisibleError] = useState(false)
 
   const validationSchema = Yup.object().shape({
@@ -37,22 +42,28 @@ const VerifyConsumer = () => {
   const [verifyConsumer, { loading, error }] = useMutation(VERIFY_CONSUMER)
 
   const onSubmit = async (data) => {
-    try {
-      const { file } = location.state
+    if (!file) return
+    const newFile = await resizeImage(file)
 
-      await verifyConsumer({
+    try {
+      const { data: verifyData } = await verifyConsumer({
         variables: {
           email: data.email,
-          selfie: file
+          selfie: newFile
         }
       })
+      const { accessToken } = verifyData.verifyConsumer
+      setAccessToken(accessToken)
+
+      history.push('/events')
     } catch (e) {
       setVisibleError(true)
     }
   }
 
   return (
-    <Container style={{ marginTop: '140px' }}>
+    <Container>
+      <PhotoUploader onChange={(fileSelected) => setFile(fileSelected)} />
       <ConsumerInfo register={register} errors={errors} />
 
       <BottomContainer>

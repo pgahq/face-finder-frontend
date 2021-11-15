@@ -6,15 +6,15 @@ import CloudUploadRounded from '@mui/icons-material/CloudUploadRounded'
 
 const SelectImageContainer = styled('div')(({ theme }) => ({
   textAlign: 'center',
-  height: 300,
+  height: 250,
   borderStyle: 'dashed',
   borderRadius: 4,
   borderColor: 'grey'
 }))
 
 const SelfieImage = styled('img')({
-  width: 300,
-  height: 300,
+  width: 250,
+  height: 250,
   objectFit: 'cover',
   borderRadius: 8
 })
@@ -53,7 +53,7 @@ const PhotoUploader = ({ onChange }) => {
               justifyContent='center'
               alignItems='center'
               flexDirection='column'
-              style={{ height: 300 }}
+              style={{ height: 250 }}
             >
               <CloudUploadRounded color='primary' fontSize='large' />
               <Typography variant='subtitle1'>Select image</Typography>

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache
 } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { createUploadLink } from 'apollo-upload-client'
+import { AppProvider } from '../../contexts/AppContext'
 
 const defaultOptions = {
   watchQuery: {
@@ -19,19 +21,32 @@ const defaultOptions = {
 
 const withApolloClient = App => {
   const WithApolloClient = props => {
+    const [accessToken, setAccessToken] = useState(null)
+
     const uploadLink = createUploadLink({
       uri: process.env.REACT_APP_API_ROOT
     })
 
+    const authLink = setContext((_, { headers }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: accessToken ? `Bearer ${accessToken}` : ''
+        }
+      }
+    })
+
     const client = new ApolloClient({
-      link: uploadLink,
+      link: authLink.concat(uploadLink),
       cache: new InMemoryCache({ resultCaching: false }),
       defaultOptions
     })
 
     return (
       <ApolloProvider client={client}>
-        <App {...props} />
+        <AppProvider value={{ accessToken, setAccessToken }}>
+          <App {...props} />
+        </AppProvider>
       </ApolloProvider>
     )
   }
