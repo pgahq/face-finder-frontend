@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import List from '@mui/material/List'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
@@ -17,8 +17,9 @@ const SelectEvent = () => {
   const history = useHistory()
 
   const [selectedEvent, setSelectedEvent] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const { data, loading } = useQuery(MY_EVENTS)
+  const { data, stopPolling } = useQuery(MY_EVENTS, { pollInterval: 1000 })
 
   const handleToggle = (value) => {
     if (selectedEvent === value) {
@@ -34,6 +35,13 @@ const SelectEvent = () => {
     }
   }
 
+  useEffect(() => {
+    if (data?.myEvents.status) {
+      stopPolling()
+      setLoading(false)
+    }
+  }, [data, stopPolling])
+
   return (
     <Container sx={{ padding: 0 }}>
       <Grid container justifyContent='center'>
@@ -47,9 +55,9 @@ const SelectEvent = () => {
           bgcolor: 'background.paper'
         }}
       >
-        {data?.myEvents.length === 0 && <EmptyView title='No event' />}
+        {!loading && data?.myEvents?.events.length === 0 && <EmptyView title='No event' />}
 
-        {data?.myEvents.map((event) => {
+        {data?.myEvents?.events.map((event) => {
           return (
             <EventCard
               key={event.id}
